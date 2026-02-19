@@ -1,0 +1,7 @@
+Quick check using REST (optional)
+List all students:
+GET http://localhost:9998/api/students
+H2 console (to inspect DB directly):
+http://localhost:9998/h2-console (JDBC URL: jdbc:h2:mem:testdb, user: sa)
+Swagger UI (if you want to explore endpoints):
+http://localhost:9998/swagger-ui/index.html
