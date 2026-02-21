@@ -35,7 +35,26 @@ public class StudentOperations {
        // listOfStudentsToMapStudents(students);
         //listOfStudentsStartWithA(students);
         //studentsSortByKay(students);
-        studentsSortByValueStudentName(students);
+        //studentsSortByValueStudentName(students);
+       // studentsSortByValueAge(students);
+    }
+
+    private void studentsSortByValueAge(List<Student> students) {
+        System.out.println("List of students Sorting by Age");
+        students
+                .stream()
+                .collect(Collectors.toMap(
+                        Student::getId,
+                        Function.identity(),
+                        (s1, s2) -> s1,
+                        LinkedHashMap::new
+                ))
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.<Long, Student>comparingByValue(Comparator.comparingInt(Student::getAge)))
+                .forEach(entry ->
+                        System.out.println("Student sorted by Age: " + entry.getValue()));
+
     }
 
     private void studentsSortByValueStudentName(List<Student> students) {
@@ -67,15 +86,18 @@ public class StudentOperations {
                 .forEach((id, student) -> System.out.println("Student sorted by ID: " + student));
     */
         students.stream()
-                .sorted(Comparator.comparing(Student::getId)) // sort first
+                //.sorted(Comparator.comparing(Student::getId)) // sort first
                 .collect(Collectors.toMap(
                         Student::getId,
                         Function.identity(),
                         (s1, s2) -> s1,
                         LinkedHashMap::new
                 ))
-                .forEach((id, student) ->
-                        System.out.println("Student sorted by ID: " + student));
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.<Long, Student>comparingByKey())
+                .forEach(entry ->
+                        System.out.println("Student sorted by ID: " + entry.getValue()));
     }
 
     private void listOfStudentsStartWithA(List<Student> students) {

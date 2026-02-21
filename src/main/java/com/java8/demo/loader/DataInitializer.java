@@ -46,7 +46,7 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("Initialized " + studentRepository.count() + " students into H2 database.");
 
         // run additional operations (pass/fail segregation)
-        studentOperations.operations();
+        //studentOperations.operations();
     }
 
     private static String sampleName(int i) {
