@@ -6,10 +6,7 @@ import com.java8.demo.service.EmployeeService;
 import com.java8.demo.service.StudentService;
 import org.springframework.stereotype.Component;
 
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -32,6 +29,49 @@ public class EmoloyeeOperations {
             return;
         }
         employeeSortByValueEmployeeSalary(employees);
+        employeeNthHighestSalary(employees, 3);
+        employeeDuplicateEmployee(employees);
+    }
+
+    private void employeeDuplicateEmployee(List<Employee> employees) {
+        System.out.println("First Duplicate Employee based on email:");
+
+        Optional<Employee> firstDuplicate = employees.stream()
+                .collect(Collectors.groupingBy(Employee::getEmail))
+                .values()
+                .stream()
+                .filter(list -> list.size() > 1)
+                .flatMap(List::stream)
+                .findFirst();
+        firstDuplicate.ifPresent(emp ->
+                System.out.println("First duplicate employee: " + emp));
+
+        System.out.println("Duplicate Employees based on email:");
+        Map<String, List<Employee>> duplicateEmployees = employees.stream()
+                .collect(Collectors.groupingBy(Employee::getEmail))
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().size() > 1)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        if (duplicateEmployees.isEmpty()) {
+            System.out.println("No duplicate employees found based on email.");
+        } else {
+            duplicateEmployees.forEach((email, empList) -> {
+                System.out.println("Email: " + email);
+                empList.forEach(emp -> System.out.println(" - " + emp));
+            });
+        }
+
+    }
+
+    private void employeeNthHighestSalary(List<Employee> employees, int i) {
+        System.out.println("Employee with " + i + "rd highest salary:");
+        employees.stream()
+                .sorted(Comparator.comparing(Employee::getSalary).reversed())
+                .skip(i - 1)
+                .findFirst()
+                .ifPresent(employee -> System.out.println("Employee with " + i + "rd highest salary: " + employee));
     }
 
     private void employeeSortByValueEmployeeSalary(List<Employee> employees) {

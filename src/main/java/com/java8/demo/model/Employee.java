@@ -30,7 +30,7 @@ public class Employee {
 
     @NotBlank(message = "email must not be blank")
     @Email(message = "email must be valid")
-    @Column(unique = true)
+    @Column(unique = false)
     private String email;
 
     @Min(value = 16, message = "age must be >= 16")

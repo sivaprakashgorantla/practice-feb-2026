@@ -34,17 +34,21 @@ public class EmployeeDataInitializer implements CommandLineRunner {
         }
 
         List<Employee> employees = IntStream.rangeClosed(1, 20)
-                .mapToObj(i -> new Employee(
-                        sampleFirstName(i),
-                        sampleLastName(i),
-                        sampleEmail(i),
-                        22 + (i % 25),
-                        sampleDepartment(i),
-                        samplePosition(i),
-                        randomSalary(i),
-                        LocalDate.now().minusYears(i % 10).minusMonths(i % 12),
-                        i % 3 != 0 // make some part-time
-                ))
+                .mapToObj(i -> {
+                    int ref = (i % 5 == 0) ? i - 1 : i;
+
+                    return new Employee(
+                            sampleFirstName(ref),
+                            sampleLastName(ref),
+                            sampleEmail(ref), // duplicate email
+                            22 + (ref % 25),
+                            sampleDepartment(ref),
+                            samplePosition(ref),
+                            randomSalary(ref),
+                            LocalDate.now().minusYears(ref % 10).minusMonths(ref % 12),
+                            ref % 3 != 0
+                    );
+                })
                 .collect(Collectors.toList());
 
         // Save each employee via the service by calling save for each item
